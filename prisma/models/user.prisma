@@ -1,0 +1,56 @@
+model User {
+    id String @id @default(uuid())
+
+    email       String  @unique
+    displayName String?
+    username    String? @unique
+    avatar      String?
+
+    onboardingCompleted Boolean @default(false)
+
+    accounts Account[]
+    sessions Session[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Account {
+    id String @id @default(uuid())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    provider   AuthProvider
+    providerId String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([provider, providerId])
+    @@index([userId])
+}
+
+enum AuthProvider {
+    GOOGLE
+    GITHUB
+    EMAIL_OTP
+}
+
+model Session {
+    id String @id @default(uuid())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    secretHash String @unique
+
+    expiresAt DateTime
+    revokedAt DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([userId])
+    @@index([expiresAt])
+}
