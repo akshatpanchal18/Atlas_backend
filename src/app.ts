@@ -2,6 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
+import CheckHealth from "./utils/health";
 
 const app = express();
 app.use(
@@ -26,4 +27,5 @@ app.get("/", (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+app.get("/health", CheckHealth);
 export default app;
