@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
+        "types": ["node", "multer"],
         "target": "ES2022",
-        "module": "CommonJS",
-        "rootDir": "./src",
+        "module": "commonjs",
+        // "rootDir": "./src",
         "outDir": "./dist",
         "strict": true,
         "esModuleInterop": true,
@@ -11,6 +12,6 @@
         "ignoreDeprecations": "6.0",
         "resolveJsonModule": true
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*","prisma.config.ts"],
     "exclude": ["node_modules", "dist"]
 }
