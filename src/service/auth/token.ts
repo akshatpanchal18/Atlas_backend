@@ -16,5 +16,8 @@ class TokenService {
   static verifyAccessToken(token: string): TokenPayload {
     return jwt.verify(token, this.ACCESS_TOKEN_SECRET) as TokenPayload;
   }
+  static generateSession(id: string, secret: string) {
+    return `${id}.${secret}`;
+  }
 }
 export default TokenService;
