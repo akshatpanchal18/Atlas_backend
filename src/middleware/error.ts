@@ -1,6 +1,7 @@
-import { Request, Response, NextFunction } from "express";
-import { ApiError } from "../utils/api-error";
+import type { NextFunction, Request, Response } from "express";
+
 import { logger } from "../config/pino";
+import { ApiError } from "../utils/api-error";
 
 export const errorHandler = (
   err: Error,
@@ -8,15 +9,24 @@ export const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  logger.error(err);
+  logger.error(
+    {
+      err,
+      method: req.method,
+      url: req.originalUrl,
+    },
+    "Unhandled error",
+  );
 
+  // Known application error
   if (err instanceof ApiError) {
-    return res.status(err.statusCode).json(err.toJSON());
+    return res.status(err.status).json(err.toJSON());
   }
 
+  // Unknown/unexpected error
   return res.status(500).json({
-    success: false,
-    statusCode: 500,
+    status: 500,
+    statusCode: "INTERNAL_SERVER_ERROR",
     message: "Internal Server Error",
     errors: [],
   });
