@@ -12,7 +12,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   }),
 );
@@ -21,6 +21,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+import AuthRoutes from "./feature/auth/auth.routes";
+
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -28,4 +30,5 @@ app.get("/", (req, res) => {
   });
 });
 app.get("/health", CheckHealth);
+app.use("/api/v1/auth", AuthRoutes);
 export default app;
