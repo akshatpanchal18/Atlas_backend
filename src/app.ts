@@ -22,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 import AuthRoutes from "./feature/auth/auth.routes";
+import { errorHandler } from "./middleware/error";
 
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -31,4 +32,5 @@ app.get("/", (req, res) => {
 });
 app.get("/health", CheckHealth);
 app.use("/api/v1/auth", AuthRoutes);
+app.use(errorHandler);
 export default app;

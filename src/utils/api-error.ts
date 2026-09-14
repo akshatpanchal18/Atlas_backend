@@ -2,6 +2,7 @@ type ApiStatusCode =
   | "BAD_REQUEST"
   | "UNAUTHORIZED"
   | "FORBIDDEN"
+  | "TOKEN_EXPIRED"
   | "NOT_FOUND"
   | "CONFLICT"
   | "VALIDATION_ERROR"
