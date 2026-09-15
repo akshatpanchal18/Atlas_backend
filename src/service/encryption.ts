@@ -8,6 +8,9 @@ class EncryptionService {
   static generateSecret() {
     return crypto.randomBytes(32).toString("hex");
   }
+  static generateOTP(): string {
+    return crypto.randomInt(100000, 1000000).toString();
+  }
   static async hash(secret: string): Promise<string> {
     logger.info(typeof this.SALT);
     return await bcrypt.hash(secret, this.SALT);

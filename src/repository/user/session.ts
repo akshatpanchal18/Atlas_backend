@@ -16,9 +16,9 @@ class SessionRepository {
     });
   }
 
-  static findByUserId(userId: string, select?: Prisma.SessionSelect) {
+  static findByAccountId(accountId: string, select?: Prisma.SessionSelect) {
     return prisma.session.findMany({
-      where: { userId },
+      where: { accountId },
       select,
     });
   }
@@ -51,9 +51,9 @@ class SessionRepository {
     });
   }
 
-  static deleteByUserId(userId: string) {
+  static deleteByAccountId(accountId: string) {
     return prisma.session.deleteMany({
-      where: { userId },
+      where: { accountId },
     });
   }
 

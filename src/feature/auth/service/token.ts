@@ -19,5 +19,9 @@ class TokenService {
   static generateSession(id: string, secret: string) {
     return `${id}.${secret}`;
   }
+  static decryptSessionCookie(cookie: string) {
+    const [id, secret] = cookie.split(".");
+    return { id, secret };
+  }
 }
 export default TokenService;
