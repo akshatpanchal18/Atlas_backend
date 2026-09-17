@@ -1,0 +1,86 @@
+enum PlanInterval {
+    MONTHLY
+    YEARLY
+}
+
+enum Currency {
+    INR
+    USD
+}
+
+enum PlanType {
+    FREE
+    PAID
+    ENTERPRISE
+}
+
+enum PlanCtaAction {
+    UPGRADE
+    CONTACT_SALES
+}
+
+enum PlanFeatureKey {
+    STORAGE
+    MEMBERS
+    PROJECTS
+}
+
+model Plan {
+    id          String @id @default(uuid())
+    slug        String @unique
+    name        String
+    description String
+
+    type      PlanType @default(PAID)
+    isPopular Boolean  @default(false)
+    isActive  Boolean  @default(true)
+
+    currency Currency @default(INR)
+
+    prices        PlanPrice[]
+    features      PlanFeature[]
+    subscriptions Subscription[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([isActive])
+}
+
+model PlanPrice {
+    id     String @id @default(uuid())
+    planId String
+    plan   Plan   @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+    interval PlanInterval
+    amount   Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([planId, interval])
+    @@index([planId])
+}
+
+model PlanFeature {
+    id     String @id @default(uuid())
+    planId String
+    plan   Plan   @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+    key   PlanFeatureKey
+    label String
+
+    // Actual limit. null = unlimited/not applicable
+    limit Int?
+
+    // Unit for displaying the limit
+    unit String?
+
+    sortOrder Int @default(0)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([planId, key])
+    @@index([planId])
+}

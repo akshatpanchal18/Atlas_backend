@@ -1,0 +1,30 @@
+enum SubscriptionStatus {
+    ACTIVE
+    CANCELLED
+    EXPIRED
+}
+
+model Subscription {
+    id String @id @default(uuid())
+
+    workspaceId String
+    planId      String
+
+    workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+    plan Plan @relation(fields: [planId], references: [id])
+
+    interval PlanInterval
+
+    status SubscriptionStatus @default(ACTIVE)
+
+    startedAt DateTime  @default(now())
+    expiresAt DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([workspaceId])
+    @@index([planId])
+    @@index([status])
+}
